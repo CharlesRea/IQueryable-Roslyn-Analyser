@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQueryableToIEnumerableAnalyser", "IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser.csproj", "{DD582FBE-AB38-408B-B4D3-D1163FAD20DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQueryableToIEnumerableAnalyser", "IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser.csproj", "{DD582FBE-AB38-408B-B4D3-D1163FAD20DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQueryableToIEnumerableAnalyser.Test", "IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser.Test\IQueryableToIEnumerableAnalyser.Test.csproj", "{6D8D4009-3979-4B1D-A4B5-F6B625C978D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IQueryableToIEnumerableAnalyser.Test", "IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser.Test\IQueryableToIEnumerableAnalyser.Test.csproj", "{6D8D4009-3979-4B1D-A4B5-F6B625C978D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IQueryableToIEnumerableAnalyser.Vsix", "IQueryableToIEnumerableAnalyser\IQueryableToIEnumerableAnalyser.Vsix\IQueryableToIEnumerableAnalyser.Vsix.csproj", "{EC078200-1FD1-4C9E-9D2C-4FE8C2E50A38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleProject", "ExampleProject\ExampleProject.csproj", "{74D476BA-8FE5-42A2-A08F-46096275EF5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{EC078200-1FD1-4C9E-9D2C-4FE8C2E50A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC078200-1FD1-4C9E-9D2C-4FE8C2E50A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC078200-1FD1-4C9E-9D2C-4FE8C2E50A38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74D476BA-8FE5-42A2-A08F-46096275EF5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74D476BA-8FE5-42A2-A08F-46096275EF5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74D476BA-8FE5-42A2-A08F-46096275EF5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74D476BA-8FE5-42A2-A08F-46096275EF5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

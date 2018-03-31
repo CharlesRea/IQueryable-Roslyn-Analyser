@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 
 namespace TestHelper
 {
@@ -17,6 +18,10 @@ namespace TestHelper
     {
         private static readonly MetadataReference CorlibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         private static readonly MetadataReference SystemCoreReference = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
+        private static readonly MetadataReference SystemRuntimeReference = MetadataReference.CreateFromFile(Assembly.Load("System.Runtime").Location);
+        private static readonly MetadataReference QueryableReference = MetadataReference.CreateFromFile(typeof(IQueryable<int>).Assembly.Location);
+        private static readonly MetadataReference SystemLinqQueryableReference = MetadataReference.CreateFromFile(Assembly.Load("System.Linq.Queryable").Location);
+        private static readonly MetadataReference SystemCollectionsReference = MetadataReference.CreateFromFile(Assembly.Load("System.Collections").Location);
         private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
         private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
 
@@ -151,6 +156,10 @@ namespace TestHelper
                 .AddProject(projectId, TestProjectName, TestProjectName, language)
                 .AddMetadataReference(projectId, CorlibReference)
                 .AddMetadataReference(projectId, SystemCoreReference)
+                .AddMetadataReference(projectId, SystemRuntimeReference)
+                .AddMetadataReference(projectId, SystemLinqQueryableReference)
+                .AddMetadataReference(projectId, QueryableReference)
+                .AddMetadataReference(projectId, SystemCollectionsReference)
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
                 .AddMetadataReference(projectId, CodeAnalysisReference);
 

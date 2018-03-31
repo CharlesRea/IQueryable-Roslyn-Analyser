@@ -1,82 +1,108 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using TestHelper;
-using IQueryableToIEnumerableAnalyser;
 
 namespace IQueryableToIEnumerableAnalyser.Test
 {
     [TestClass]
-    public class UnitTest : CodeFixVerifier
+    public class IQueryableToIEnumerableAnalyserTests : CodeFixVerifier
     {
-
-        //No diagnostics expected to show up
         [TestMethod]
-        public void TestMethod1()
+        public void EmptySource_NoDiagnostics()
         {
             var test = @"";
 
             VerifyCSharpDiagnostic(test);
         }
 
-        //Diagnostic and CodeFix both triggered and checked for
         [TestMethod]
-        public void TestMethod2()
+        public void ImplicitConversionQueryableToEnumerable_ReturnsDiagnostic()
         {
             var test = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+using System.Linq;
 
-    namespace ConsoleApplication1
+namespace ExampleProject
+{
+    public class ExampleClass
     {
-        class TypeName
-        {   
+        private readonly IQueryable<int> queryable = new[] {1, 3, 4}.AsQueryable();
+
+        public void ImplicitlyConvertToEnumerable()
+        {
+            var enumerable = queryable.ToDictionary(i => i);
         }
-    }";
-            var expected = new DiagnosticResult
+    }
+}";
+
+            var expected = BuildIQueryableDiagnostic(12, 30, "queryable", "System.Linq.IQueryable<int>", "System.Collections.Generic.IEnumerable<int>");
+            VerifyCSharpDiagnostic(test, expected);
+        }
+
+        [TestMethod]
+        public void ExplicitConversionQueryableToEnumerableToList_NoDiagnostics()
+        {
+            var test = @"
+using System.Linq;
+using System.Collections.Generic;
+
+namespace ExampleProject
+{
+    public class ExampleClass
+    {
+        private readonly IQueryable<int> queryable = new[] {1, 3, 4}.AsQueryable();
+
+        public void ImplicitlyConvertToEnumerable()
+        {
+            var enumerable = queryable.Select(i => i*2).ToList();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(test);
+        }
+
+        [TestMethod]
+        public void ExplicitConversionQueryableToEnumerableAsEnumerable_NoDiagnostics()
+        {
+            var test = @"
+using System.Linq;
+using System.Collections.Generic;
+
+namespace ExampleProject
+{
+    public class ExampleClass
+    {
+        private readonly IQueryable<int> queryable = new[] {1, 3, 4}.AsQueryable();
+
+        public void ImplicitlyConvertToEnumerable()
+        {
+            var enumerable = queryable.Select(i => i*2).AsEnumerable();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(test);
+        }
+
+        private DiagnosticResult BuildIQueryableDiagnostic(int line, int column,
+            string variableName, string queryableType, string enumerableType)
+        {
+            return new DiagnosticResult
             {
                 Id = "IQueryableToIEnumerableAnalyser",
-                Message = String.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                Message = $"{variableName} is an {queryableType}, but is being implicitly converted to an {enumerableType}",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[] {
-                            new DiagnosticResultLocation("Test0.cs", 11, 15)
-                        }
+                        new DiagnosticResultLocation("Test0.cs", line, column)
+                    }
             };
-
-            VerifyCSharpDiagnostic(test, expected);
-
-            var fixtest = @"
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
-
-    namespace ConsoleApplication1
-    {
-        class TYPENAME
-        {   
-        }
-    }";
-            VerifyCSharpFix(test, fixtest);
-        }
-
-        protected override CodeFixProvider GetCSharpCodeFixProvider()
-        {
-            return new IQueryableToIEnumerableAnalyserCodeFixProvider();
         }
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
-            return new IQueryableToIEnumerableAnalyserAnalyzer();
+            return new IQueryableToIEnumerableAnalyser();
         }
     }
 }
